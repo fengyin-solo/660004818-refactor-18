@@ -68,7 +68,7 @@ function buildBackbone(phi: number, psi: number) {
   const cMat = new THREE.MeshPhongMaterial({ color: 0xff6644, emissive: 0x331111 })
   const bondMat = new THREE.MeshPhongMaterial({ color: 0xaaaaaa })
 
-  const residues = store.result?.params.residues || 8
+  const residues = store.residues
 
   for (let i = 0; i < residues; i++) {
     const nPos = pos.clone()

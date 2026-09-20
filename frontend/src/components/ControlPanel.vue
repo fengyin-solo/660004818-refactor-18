@@ -11,8 +11,8 @@
         <el-button type="primary" @click="emitSample" :loading="store.loading">🎲 生成构象采样</el-button>
       </el-form-item>
     </el-form>
-    <div class="filters" v-if="store.result">
-      <el-radio-group v-model="activeCluster" @change="onCluster">
+    <div class="filters" v-if="store.hasResult">
+      <el-radio-group v-model="activeCluster">
         <el-radio-button label="all">全部</el-radio-button>
         <el-radio-button label="alpha-helix">α-螺旋</el-radio-button>
         <el-radio-button label="beta-sheet">β-折叠</el-radio-button>
@@ -24,14 +24,17 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue"
+import { reactive, computed } from "vue"
 import { useProteinStore } from "../store/protein"
 const emit = defineEmits<{ sample: [params: { residues: number; conformations: number }] }>()
 const store = useProteinStore()
 const form = reactive({ residues: 10, conformations: 1000 })
-const activeCluster = ref("all")
+// 直接读写 store 的同一份取值，不再本地留副本（避免重新采样后停在上一轮）
+const activeCluster = computed({
+  get: () => store.selectedCluster,
+  set: (val: string) => store.filterByCluster(val),
+})
 function emitSample() { emit("sample", { ...form }) }
-function onCluster(val: string) { store.filterByCluster(val) }
 </script>
 
 <style scoped>
