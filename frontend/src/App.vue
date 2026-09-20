@@ -6,11 +6,11 @@
     </header>
     <main class="app-main">
       <ControlPanel @sample="handleSample" />
-      <div class="main-grid" v-if="store.result">
+      <div class="main-grid" v-if="store.hasResult">
         <div class="plot-area"><RamachandranPlot /></div>
         <div class="viewer-area"><ProteinViewer3D /></div>
       </div>
-      <ConformationTable v-if="store.result" />
+      <ConformationTable v-if="store.hasResult" />
     </main>
   </div>
 </template>

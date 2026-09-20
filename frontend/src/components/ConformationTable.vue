@@ -26,14 +26,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useProteinStore } from '../store/protein'
 import type { Conformation } from '../types'
 
 const store = useProteinStore()
-const confs = computed(() => (store.result?.conformations || []).filter(c =>
-  store.selectedCluster === 'all' || c.cluster === store.selectedCluster
-))
+// 与 Ramachandran 图共用同一份过滤后的结果列表
+const { filteredConformations: confs } = storeToRefs(store)
 
 function onRowClick(row: Conformation) { store.selectConformation(row) }
 function tagType(r: string) {
